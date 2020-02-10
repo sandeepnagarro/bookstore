@@ -61,4 +61,14 @@ public void testGetByTitle(){
 	
 }
 
+@Test
+public void testSaveBook(){
+	Book book = new Book();
+	book.setId(1l);
+	book.setIsbn("23");
+	book.setTitle("spring");
+	bookRepository.save(book);
+	assertThat(book.getId()).isNotNull();
+}
+
 }
