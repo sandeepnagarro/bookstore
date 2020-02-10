@@ -54,7 +54,7 @@ public class BookStoreController {
 	public ResponseEntity<List<Book>> getByTitle(@RequestParam String title){
 		List<Book> books = new ArrayList<Book>();
 		
-		books = bookService.findByBookNameLike(title);
+		books = bookService.findByTitleName(title);
 		if(books.isEmpty()){
 			return new ResponseEntity<>(books, HttpStatus.NOT_FOUND);
 		}

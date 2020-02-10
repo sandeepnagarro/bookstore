@@ -56,7 +56,7 @@ public void testGetByTitle(){
 	List<Book> books = new ArrayList<>();
 	books.add(book);
 	doReturn(books).when(bookRepository).findByTitleLike("%spri%");
-	List<Book>actualBooks = bookService.findByBookNameLike("spri");
+	List<Book>actualBooks = bookService.findByTitleName("spri");
 	assertThat(actualBooks).isEqualTo(books);
 	
 }
