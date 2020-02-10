@@ -28,10 +28,10 @@ Explore Rest APIs
 The app defines following CRUD APIs.
 
 POST /books
-GET /books/isbn?isbn="isbn"
-GET /books/title?title="title"
-GET /books/author?author="author"
-GET /books/media/serach
+GET /books/isbn?isbn=isbn
+GET /books/title?title=title
+GET /books/author?author=author
+GET /books/media/serach?title=title
 
 POST /books/orders
 
