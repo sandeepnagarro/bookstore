@@ -11,7 +11,7 @@ Steps to Setup
 
 1. Clone the application
 
-git clone https://github.com/scbushan05/book-api-spring-boot.git
+git clone 
 2. Create Mysql database
 
 create database test
