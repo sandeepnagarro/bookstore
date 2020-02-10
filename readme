@@ -11,7 +11,7 @@ Steps to Setup
 
 1. Clone the application
 
-git clone 
+git clone https://github.com/sandeepnagarro/bookstore.git
 2. Create Mysql database
 
 create database test
@@ -28,7 +28,7 @@ Explore Rest APIs
 The app defines following CRUD APIs.
 
 POST /books
-GET /books/isbn?isbn="isbnnumber"
+GET /books/isbn?isbn="isbn"
 GET /books/title?title="title"
 GET /books/author?author="author"
 GET /books/media/serach
