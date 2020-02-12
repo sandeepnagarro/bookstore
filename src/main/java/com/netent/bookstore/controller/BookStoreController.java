@@ -2,6 +2,11 @@ package com.netent.bookstore.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -13,17 +18,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import com.netent.bookstore.exception.RecordNotFoundException;
 import com.netent.bookstore.model.Book;
 import com.netent.bookstore.model.UserInfo;
 import com.netent.bookstore.service.BookService;
 
 @RestController
 public class BookStoreController {
-
-	@Autowired
+  private static final Logger LOGGER= LoggerFactory.getLogger(BookStoreController.class);
+	
+  @Autowired
 	BookService bookService;
+  
 	@PostMapping("/books")
-	public ResponseEntity<?> book(@RequestBody Book book){
+	public ResponseEntity<?> book(@Valid @RequestBody Book book){
 		bookService.saveBook(book);
 		
 		return new ResponseEntity<>(book, HttpStatus.CREATED);
@@ -34,8 +42,10 @@ public class BookStoreController {
 		List<Book> books = new ArrayList<Book>();
 		books =  bookService.findByIsbn(isbn);
 		if(books.isEmpty()){
-			return new ResponseEntity<>(books, HttpStatus.NOT_FOUND);
+			LOGGER.debug("Book with given ISBN not found");
+			throw new RecordNotFoundException("Book with ISBN" + isbn + "doest not exist");
 		}
+		LOGGER.debug("Book with given ISBN exist");
 		return new ResponseEntity<>(books, HttpStatus.OK);
 	}
 	
@@ -44,8 +54,10 @@ public class BookStoreController {
 					List<Book> books = new ArrayList<Book>();
 					books =  bookService.findByAuthorName(author);
 					if(books.isEmpty()){
-						return new ResponseEntity<>(books, HttpStatus.NOT_FOUND);
+						LOGGER.debug("Book with given author not found");
+						throw new RecordNotFoundException("Book with Author" + author + "doest not exist");
 					}
+					LOGGER.debug("Book with given author exist");
 					return new ResponseEntity<>(books, HttpStatus.OK);
 	}
 	
@@ -56,8 +68,10 @@ public class BookStoreController {
 		
 		books = bookService.findByTitleName(title);
 		if(books.isEmpty()){
-			return new ResponseEntity<>(books, HttpStatus.NOT_FOUND);
+			LOGGER.debug("Book with given title not found");
+			throw new RecordNotFoundException("Book with Title" + title + "doest not exist");
 		}
+		LOGGER.debug("Book with given title exist");
 		return new ResponseEntity<>(books, HttpStatus.OK);
 		
 	}
@@ -71,11 +85,14 @@ public class BookStoreController {
 		                    HttpMethod.GET, null, new ParameterizedTypeReference<List<UserInfo>>() {
 		            });
 		List<UserInfo> usersList = usersResponse.getBody();
+		
 		for(UserInfo user : usersList){
+			LOGGER.debug("User in the list"+user);
 			if(user.getTitle().contains(title)|| user.getBody().contains(title)){
 				matchedList.add(user.getTitle());
 			}
 		}
+		LOGGER.debug("matched titles"+matchedList);
 		return matchedList;
 	}
 }

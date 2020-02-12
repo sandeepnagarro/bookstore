@@ -1,6 +1,7 @@
 package com.netent.bookstore.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "books")
@@ -8,6 +9,7 @@ public class Book {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@NotEmpty(message = "title must not be empty")
 	private String title;
 	private String author;
 	private Double price;
