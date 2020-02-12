@@ -1,6 +1,9 @@
 package com.netent.bookstore.service;
 
 import java.util.Date;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,7 @@ public class OrderServiceImpl implements OrderService{
 	private OrderRepository orderRepository;
 	
 	@Override
+	@Transactional
 	public void save(Order order) {
 		order.setCreationDate(new Date());
 		for(OrderLine orderLine : order.getOrderLines()){
