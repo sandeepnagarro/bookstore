@@ -21,19 +21,20 @@ open src/main/resources/application.properties
 
 change spring.datasource.username and spring.datasource.password as per your mysql installation
 
-4. Build and run the app using maven
+4. Build and run the app using maven and docker compose
+docker-compose up --build
 
 
 Explore Rest APIs
 The app defines following CRUD APIs.
 
-POST /books
-GET /books/isbn?isbn=isbn
-GET /books/title?title=title
-GET /books/author?author=author
-GET /books/media/serach?title=title
+POST http://localhost:8087/books
+GET http://localhost:8087/books/isbn?isbn=isbn
+GET http://localhost:8087/books/title?title=title
+GET http://localhost:8087/books/author?author=author
+GET http://localhost:8087/books/media/serach?title=title
 
-POST /books/orders
+POST http://localhost:8087/books/orders
 
 
 You can test them using postman or any other rest client.
