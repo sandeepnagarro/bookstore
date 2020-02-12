@@ -1,0 +1,25 @@
+version: '3'
+services:
+  bookstore-mysql:
+    container_name: book-mysql
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - '3307:3306'
+    restart: always
+  bookstore-app:
+    container_name: book-store
+    image: spring-boot-app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://bookstore-mysql:3306/test?useSSL=false 
+    ports:
+      - '8087:8080'
+    command: mvn clean spring-boot:run
+    depends_on:
+      - bookstore-mysql
