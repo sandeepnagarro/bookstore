@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import static org.mockito.Mockito.doReturn;
 import com.netent.bookstore.model.Book;
+import com.netent.bookstore.model.dto.BookDTO;
 import com.netent.bookstore.repository.BookRepository;
+import com.netent.bookstore.util.ObjectMapperUtils;
+
 import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class BookServiceTest {
@@ -20,6 +23,9 @@ BookRepository bookRepository;
 @InjectMocks
 BookServiceImpl bookService;
 
+@Mock
+private ObjectMapperUtils modelMapper;
+
 @Test
 public void testGetByIsbn(){
 	Book book = new Book();
@@ -28,8 +34,8 @@ public void testGetByIsbn(){
 	List<Book> books = new ArrayList<>();
 	books.add(book);
 	doReturn(books).when(bookRepository).findByIsbn("23");
-	List<Book>actualBooks = bookService.findByIsbn("23");
-	assertThat(actualBooks).isEqualTo(books);
+	List<BookDTO>actualBooks = bookService.findByIsbn("23");
+	assertThat(actualBooks).isEqualTo(modelMapper.mapAll(books, BookDTO.class));
 	
 }
 
@@ -42,8 +48,8 @@ public void testGetByAuthor(){
 	List<Book> books = new ArrayList<>();
 	books.add(book);
 	doReturn(books).when(bookRepository).findByAuthorLike("%san%");
-	List<Book>actualBooks = bookService.findByAuthorName("san");
-	assertThat(actualBooks).isEqualTo(books);
+	List<BookDTO>actualBooks = bookService.findByAuthorName("san");
+	assertThat(actualBooks).isEqualTo(modelMapper.mapAll(books, BookDTO.class));
 	
 }
 
@@ -56,8 +62,8 @@ public void testGetByTitle(){
 	List<Book> books = new ArrayList<>();
 	books.add(book);
 	doReturn(books).when(bookRepository).findByTitleLike("%spri%");
-	List<Book>actualBooks = bookService.findByTitleName("spri");
-	assertThat(actualBooks).isEqualTo(books);
+	List<BookDTO>actualBooks = bookService.findByTitleName("spri");
+	assertThat(actualBooks).isEqualTo(modelMapper.mapAll(books, BookDTO.class));
 	
 }
 

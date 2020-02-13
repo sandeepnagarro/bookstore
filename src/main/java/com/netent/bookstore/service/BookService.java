@@ -1,12 +1,11 @@
 package com.netent.bookstore.service;
 
 import java.util.List;
-
-import com.netent.bookstore.model.Book;
+import com.netent.bookstore.model.dto.BookDTO;
 
 public interface BookService {
-Book saveBook(Book book);
-List<Book> findByAuthorName(String author);
-List<Book> findByTitleName(String title);
-List<Book> findByIsbn(String isbn);
+BookDTO saveBook(BookDTO book);
+List<BookDTO> findByAuthorName(String author);
+List<BookDTO> findByTitleName(String title);
+List<BookDTO> findByIsbn(String isbn);
 }

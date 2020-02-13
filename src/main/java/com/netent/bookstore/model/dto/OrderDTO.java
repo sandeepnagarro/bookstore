@@ -1,36 +1,26 @@
-package com.netent.bookstore.model;
+package com.netent.bookstore.model.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.*;
 
-@Entity
-@Table(name="myOrder")
-public class Order implements Serializable{
+import javax.validation.constraints.NotEmpty;
+
+public class OrderDTO implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	 @Id
-	    @GeneratedValue(strategy = GenerationType.AUTO)
+	
 	    private Long id;
-
-	    @Version
-	    @Column(name = "version")
-	    private int version;
-
-	    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	    private List<OrderLine> orderLines = new ArrayList<>();
+		 @NotEmpty(message = "order line must not be empty")
+	    private List<OrderLineDTO> orderLines = new ArrayList<>();
 
 	    private Float totalOrder = 0F;
 
-	    @Column
 	    private String name;
 
-	    @Column
 	    private String address;
 
-	    @Column
 	    private Date creationDate;
 
 		public Long getId() {
@@ -41,19 +31,11 @@ public class Order implements Serializable{
 			this.id = id;
 		}
 
-		public int getVersion() {
-			return version;
-		}
-
-		public void setVersion(int version) {
-			this.version = version;
-		}
-
-		public List<OrderLine> getOrderLines() {
+		public List<OrderLineDTO> getOrderLines() {
 			return orderLines;
 		}
 
-		public void setOrderLines(List<OrderLine> orderLines) {
+		public void setOrderLines(List<OrderLineDTO> orderLines) {
 			this.orderLines = orderLines;
 		}
 

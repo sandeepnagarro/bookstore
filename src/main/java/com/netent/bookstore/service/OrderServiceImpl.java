@@ -1,17 +1,20 @@
 package com.netent.bookstore.service;
 
 import java.util.Date;
-
+import java.util.Optional;
 import javax.transaction.Transactional;
-
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.netent.bookstore.exception.RecordNotFoundException;
+import com.netent.bookstore.model.Book;
 import com.netent.bookstore.model.Order;
-import com.netent.bookstore.model.OrderLine;
+import com.netent.bookstore.model.dto.BookDTO;
+import com.netent.bookstore.model.dto.OrderDTO;
+import com.netent.bookstore.model.dto.OrderLineDTO;
 import com.netent.bookstore.repository.BookRepository;
-import com.netent.bookstore.repository.OrderLineRepository;
 import com.netent.bookstore.repository.OrderRepository;
+import com.netent.bookstore.util.ObjectMapperUtils;
 @Service("orderService")
 public class OrderServiceImpl implements OrderService{
 
@@ -19,20 +22,31 @@ public class OrderServiceImpl implements OrderService{
 	private BookRepository bookRepository;
 	
 	@Autowired
-	private OrderLineRepository orderLineRepository;
+	private OrderRepository orderRepository;
 	
 	@Autowired
-	private OrderRepository orderRepository;
+	private ObjectMapperUtils modelMapper;
+	
+	ModelMapper mp = new ModelMapper();
 	
 	@Override
 	@Transactional
-	public void save(Order order) {
-		order.setCreationDate(new Date());
-		for(OrderLine orderLine : order.getOrderLines()){
-			bookRepository.findById(orderLine.getBook().getId()).ifPresent(orderLine :: setBook);
-			orderLineRepository.save(orderLine);
+	public OrderDTO save(OrderDTO orderDto) {
+		int countValidBooks = 0;
+		orderDto.setCreationDate(new Date());
+		for(OrderLineDTO orderLine : orderDto.getOrderLines()){
+			Optional<Book> bookOptional = bookRepository.findById(orderLine.getBookDto().getId());
+			if(bookOptional.isPresent()){
+				orderLine.setBookDto(modelMapper.map(bookOptional.get(), BookDTO.class));
+				countValidBooks++;
+			}
 		}
-		orderRepository.save(order);
+		if(countValidBooks<1){
+			throw new RecordNotFoundException("Books are not valid");
+		}
+		return modelMapper.map(orderRepository.save(convertToOrder(orderDto)), OrderDTO.class);
 	}
-
+	private Order convertToOrder(OrderDTO order) {
+		   return mp.map(order, Order.class);
+		  }
 }

@@ -2,9 +2,8 @@ package com.netent.bookstore.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.Valid;
-
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import com.netent.bookstore.exception.RecordNotFoundException;
-import com.netent.bookstore.model.Book;
 import com.netent.bookstore.model.UserInfo;
+import com.netent.bookstore.model.dto.BookDTO;
 import com.netent.bookstore.service.BookService;
 
 @RestController
@@ -30,19 +29,18 @@ public class BookStoreController {
   @Autowired
 	BookService bookService;
   
+   ModelMapper modelMapper = new ModelMapper();
+  
 	@PostMapping("/books")
-	public ResponseEntity<?> book(@Valid @RequestBody Book book){
-		bookService.saveBook(book);
-		
-		return new ResponseEntity<>(book, HttpStatus.CREATED);
+	public ResponseEntity<BookDTO> book(@Valid @RequestBody BookDTO book){
+		return new ResponseEntity<>(bookService.saveBook(book), HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/books/isbn")
-	public ResponseEntity<List<Book>> getByIsbn(@RequestParam String isbn){
-		List<Book> books = new ArrayList<Book>();
-		books =  bookService.findByIsbn(isbn);
+	public ResponseEntity<List<BookDTO>> getByIsbn(@RequestParam String isbn){
+		List<BookDTO> books = bookService.findByIsbn(isbn);
 		if(books.isEmpty()){
-			LOGGER.debug("Book with given ISBN not found");
+			LOGGER.error("Book with given ISBN not found");
 			throw new RecordNotFoundException("Book with ISBN" + isbn + "doest not exist");
 		}
 		LOGGER.debug("Book with given ISBN exist");
@@ -50,11 +48,10 @@ public class BookStoreController {
 	}
 	
 	@GetMapping("/books/author")
-	public ResponseEntity<List<Book>> getByAuthorName(@RequestParam String author){
-					List<Book> books = new ArrayList<Book>();
-					books =  bookService.findByAuthorName(author);
+	public ResponseEntity<List<BookDTO>> getByAuthorName(@RequestParam String author){
+					List<BookDTO> books = bookService.findByAuthorName(author);
 					if(books.isEmpty()){
-						LOGGER.debug("Book with given author not found");
+						LOGGER.error("Book with given author not found");
 						throw new RecordNotFoundException("Book with Author" + author + "doest not exist");
 					}
 					LOGGER.debug("Book with given author exist");
@@ -63,12 +60,10 @@ public class BookStoreController {
 	
 	
 	@GetMapping("/books/title")
-	public ResponseEntity<List<Book>> getByTitle(@RequestParam String title){
-		List<Book> books = new ArrayList<Book>();
-		
-		books = bookService.findByTitleName(title);
+	public ResponseEntity<List<BookDTO>> getByTitle(@RequestParam String title){
+		List<BookDTO> books = bookService.findByTitleName(title);
 		if(books.isEmpty()){
-			LOGGER.debug("Book with given title not found");
+			LOGGER.error("Book with given title not found");
 			throw new RecordNotFoundException("Book with Title" + title + "doest not exist");
 		}
 		LOGGER.debug("Book with given title exist");
@@ -95,4 +90,6 @@ public class BookStoreController {
 		LOGGER.debug("matched titles"+matchedList);
 		return matchedList;
 	}
+	
+	
 }

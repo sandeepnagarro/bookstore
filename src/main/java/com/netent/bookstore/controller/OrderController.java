@@ -1,5 +1,7 @@
 package com.netent.bookstore.controller;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.netent.bookstore.model.Order;
+import com.netent.bookstore.model.dto.OrderDTO;
 import com.netent.bookstore.service.OrderService;
 
 @RestController
@@ -21,11 +23,9 @@ public class OrderController {
   private OrderService orderService;
   
 	@PostMapping("/books/orders")
-	public ResponseEntity<?> placeOrder(@RequestBody Order order){
+	public ResponseEntity<OrderDTO> placeOrder(@Valid @RequestBody OrderDTO order){
 		LOGGER.debug("Book ordered list"+order);
-		orderService.save(order);
-		
-		return new ResponseEntity<>(order, HttpStatus.CREATED);
+		return new ResponseEntity<>(orderService.save(order), HttpStatus.CREATED);
 	}
 	
 }

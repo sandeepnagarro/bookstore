@@ -20,7 +20,7 @@ public class OrderLine implements Serializable{
     @Column
     private Integer quantity;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Book book;
 
 	public Long getId() {

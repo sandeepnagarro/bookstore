@@ -1,7 +1,7 @@
 package com.netent.bookstore.service;
 
-import com.netent.bookstore.model.Order;
+import com.netent.bookstore.model.dto.OrderDTO;
 
 public interface OrderService {
-public void save(Order order);
+public OrderDTO save(OrderDTO order);
 }

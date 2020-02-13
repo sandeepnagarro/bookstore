@@ -1,4 +1,4 @@
-package com.netent.bookstore.util;
+package com.netent.bookstore.exception;
 
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;

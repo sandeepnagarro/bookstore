@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.netent.bookstore.util.ErrorResponse;
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
 
