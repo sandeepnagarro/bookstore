@@ -17,7 +17,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://bookstore-mysql:3306/test?useSSL=false 
+      SPRING_DATASOURCE_URL: jdbc:mysql://bookstore-mysql:3306/test?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     ports:
       - '8087:8080'
     command: mvn clean spring-boot:run
