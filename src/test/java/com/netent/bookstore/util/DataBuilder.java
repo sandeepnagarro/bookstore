@@ -5,31 +5,34 @@ import java.util.Arrays;
 import com.netent.bookstore.model.Book;
 import com.netent.bookstore.model.Order;
 import com.netent.bookstore.model.OrderLine;
+import com.netent.bookstore.model.dto.BookDTO;
+import com.netent.bookstore.model.dto.OrderDTO;
+import com.netent.bookstore.model.dto.OrderLineDTO;
 
 public class DataBuilder {
 
-    public static Order buildOrder() {
+    public static OrderDTO buildOrder() {
 
-        Book book = buildBook();
+        BookDTO book = buildBook();
 
         return buildOrder(book);
     }
 
-    public static Order buildOrder(Book book) {
-        OrderLine orderLine = new OrderLine();
-        orderLine.setBook(book);
+    public static OrderDTO buildOrder(BookDTO book) {
+        OrderLineDTO orderLine = new OrderLineDTO();
+        orderLine.setBookDto(book);
         orderLine.setQuantity(Integer.valueOf(1));
 
-        Order order = new Order();
+        OrderDTO order = new OrderDTO();
         order.setOrderLines(Arrays.asList(orderLine));
         order.setName("Olivier");
         order.setAddress("France");
         return order;
     }
 
-    public static Book buildBook() {
+    public static BookDTO buildBook() {
 
-        Book book = new Book();
+        BookDTO book = new BookDTO();
         book.setAuthor("Chris Schaefer , Clarence Ho , Rob Harrop");
         book.setTitle("Pro Spring");
         book.setIsbn("345");
