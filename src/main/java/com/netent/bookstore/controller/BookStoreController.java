@@ -32,7 +32,7 @@ public class BookStoreController {
    ModelMapper modelMapper = new ModelMapper();
   
 	@PostMapping("/books")
-	public ResponseEntity<BookDTO> book(@Valid @RequestBody BookDTO book){
+	public ResponseEntity<BookDTO> save(@Valid @RequestBody BookDTO book){
 		return new ResponseEntity<>(bookService.saveBook(book), HttpStatus.CREATED);
 	}
 	
