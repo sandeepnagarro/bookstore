@@ -16,6 +16,7 @@ public class Book implements Serializable{
 	private String author;
 	private Double price;
 	private String isbn;
+	private Integer bookCounter;
 
 	public Book() {
 		super();
@@ -72,6 +73,14 @@ public class Book implements Serializable{
 
 	public void setIsbn(String isbn) {
 		this.isbn = isbn;
+	}
+
+	public Integer getBookCounter() {
+		return bookCounter;
+	}
+
+	public void setBookCounter(Integer bookCounter) {
+		this.bookCounter = bookCounter;
 	}
 
 

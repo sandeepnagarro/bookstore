@@ -26,10 +26,13 @@ import com.netent.bookstore.service.BookService;
 public class BookStoreController {
   private static final Logger LOGGER= LoggerFactory.getLogger(BookStoreController.class);
 	
-  @Autowired
+    @Autowired
 	BookService bookService;
   
    ModelMapper modelMapper = new ModelMapper();
+   
+   private static final String BOOKS = "List of books available for {} are {} ";
+   private static final String NOBOOKS = "No book available with {}";
   
 	@PostMapping("/books")
 	public ResponseEntity<BookDTO> save(@Valid @RequestBody BookDTO book){
@@ -40,10 +43,10 @@ public class BookStoreController {
 	public ResponseEntity<List<BookDTO>> getByIsbn(@RequestParam String isbn){
 		List<BookDTO> books = bookService.findByIsbn(isbn);
 		if(books.isEmpty()){
-			LOGGER.error("Book with given ISBN not found");
+			LOGGER.error(NOBOOKS, isbn);
 			throw new RecordNotFoundException("Book with ISBN" + isbn + "doest not exist");
 		}
-		LOGGER.debug("Book with given ISBN exist");
+		LOGGER.debug(BOOKS, isbn, books);
 		return new ResponseEntity<>(books, HttpStatus.OK);
 	}
 	
@@ -51,10 +54,10 @@ public class BookStoreController {
 	public ResponseEntity<List<BookDTO>> getByAuthorName(@RequestParam String author){
 					List<BookDTO> books = bookService.findByAuthorName(author);
 					if(books.isEmpty()){
-						LOGGER.error("Book with given author not found");
+						LOGGER.error(NOBOOKS, author);
 						throw new RecordNotFoundException("Book with Author" + author + "doest not exist");
 					}
-					LOGGER.debug("Book with given author exist");
+					LOGGER.debug(BOOKS, author, books);
 					return new ResponseEntity<>(books, HttpStatus.OK);
 	}
 	
@@ -63,10 +66,10 @@ public class BookStoreController {
 	public ResponseEntity<List<BookDTO>> getByTitle(@RequestParam String title){
 		List<BookDTO> books = bookService.findByTitleName(title);
 		if(books.isEmpty()){
-			LOGGER.error("Book with given title not found");
+			LOGGER.error(NOBOOKS, title);
 			throw new RecordNotFoundException("Book with Title" + title + "doest not exist");
 		}
-		LOGGER.debug("Book with given title exist");
+		LOGGER.debug(BOOKS, title, books);
 		return new ResponseEntity<>(books, HttpStatus.OK);
 		
 	}
@@ -82,12 +85,12 @@ public class BookStoreController {
 		List<UserInfo> usersList = usersResponse.getBody();
 		
 		for(UserInfo user : usersList){
-			LOGGER.debug("User in the list"+user);
+			LOGGER.debug("User in the list {} ", user);
 			if(user.getTitle().contains(title)|| user.getBody().contains(title)){
 				matchedList.add(user.getTitle());
 			}
 		}
-		LOGGER.debug("matched titles"+matchedList);
+		LOGGER.debug("matched titles list {}", matchedList);
 		return matchedList;
 	}
 	

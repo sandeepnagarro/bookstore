@@ -37,8 +37,15 @@ public class OrderServiceImpl implements OrderService{
 		for(OrderLineDTO orderLine : orderDto.getOrderLines()){
 			Optional<Book> bookOptional = bookRepository.findById(orderLine.getBookDto().getId());
 			if(bookOptional.isPresent()){
+				Integer availableBooks = bookOptional.get().getBookCounter() - orderLine.getBookDto().getBookCounter();
+				if(availableBooks>0) {
+				bookOptional.get().setBookCounter(availableBooks);
 				orderLine.setBookDto(modelMapper.map(bookOptional.get(), BookDTO.class));
 				countValidBooks++;
+				}
+				else {
+					throw new RecordNotFoundException("only "+ bookOptional.get().getBookCounter()+ " books available in stock");
+				}
 			}
 		}
 		if(countValidBooks<1){

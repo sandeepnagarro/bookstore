@@ -17,14 +17,14 @@ import com.netent.bookstore.service.OrderService;
 public class OrderController {
   
 
-	private static final Logger LOGGER= LoggerFactory.getLogger(BookStoreController.class);
+  private static final Logger LOGGER= LoggerFactory.getLogger(OrderController.class);
 	
   @Autowired
   private OrderService orderService;
   
 	@PostMapping("/books/orders")
 	public ResponseEntity<OrderDTO> placeOrder(@Valid @RequestBody OrderDTO order){
-		LOGGER.debug("Book ordered list"+order);
+		LOGGER.debug("Book ordered list {}", order);
 		return new ResponseEntity<>(orderService.save(order), HttpStatus.CREATED);
 	}
 	
