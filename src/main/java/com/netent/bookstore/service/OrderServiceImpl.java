@@ -30,7 +30,7 @@ public class OrderServiceImpl implements OrderService{
 	ModelMapper mp = new ModelMapper();
 	
 	@Override
-	@Transactional
+	@Transactional(rollbackOn = RecordNotFoundException.class)
 	public OrderDTO save(OrderDTO orderDto) {
 		int countValidBooks = 0;
 		orderDto.setCreationDate(new Date());
